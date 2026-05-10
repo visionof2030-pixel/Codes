@@ -64,7 +64,7 @@ function writeSnippets(data){
 }
 
 // ======================
-// Home Route
+// Home
 // ======================
 
 app.get("/", (req, res) => {
@@ -81,7 +81,54 @@ app.get("/api/snippets", (req, res) => {
 
   const snippets = readSnippets();
 
-  res.json(snippets);
+  // إخفاء الأكواد المستخدمة
+  const available =
+    snippets.filter(s => !s.used);
+
+  res.json(available);
+
+});
+
+// ======================
+// Copy once only
+// ======================
+
+app.post("/api/copy/:id", (req, res) => {
+
+  const snippets = readSnippets();
+
+  const snippet =
+    snippets.find(
+      s => s.id == req.params.id
+    );
+
+  // غير موجود
+  if(!snippet){
+
+    return res.status(404).json({
+      error: "الكود غير موجود"
+    });
+
+  }
+
+  // مستخدم مسبقًا
+  if(snippet.used){
+
+    return res.status(400).json({
+      error: "الكود مستخدم مسبقًا"
+    });
+
+  }
+
+  // تفعيل الاستخدام
+  snippet.used = true;
+
+  writeSnippets(snippets);
+
+  // إرسال الكود
+  res.json({
+    code: snippet.code
+  });
 
 });
 
@@ -98,7 +145,7 @@ app.post("/api/snippets", (req, res) => {
     id: Date.now(),
 
     title:
-      req.body.title || "Untitled",
+      req.body.title || "كود تفعيل",
 
     language:
       req.body.language || "text",
@@ -108,6 +155,8 @@ app.post("/api/snippets", (req, res) => {
 
     code:
       req.body.code || "",
+
+    used: false,
 
     createdAt:
       new Date().toISOString()
@@ -119,26 +168,6 @@ app.post("/api/snippets", (req, res) => {
   writeSnippets(snippets);
 
   res.json(newSnippet);
-
-});
-
-// ======================
-// DELETE snippet
-// ======================
-
-app.delete("/api/snippets/:id", (req, res) => {
-
-  const snippets = readSnippets();
-
-  const filtered = snippets.filter(
-    s => s.id != req.params.id
-  );
-
-  writeSnippets(filtered);
-
-  res.json({
-    success: true
-  });
 
 });
 
