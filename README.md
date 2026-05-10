@@ -5,7 +5,10 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+/>
 
 <title>كود نيكسوس</title>
 
@@ -25,13 +28,13 @@ body{
 
   font-family:Arial;
 
+  min-height:100vh;
+
   display:flex;
 
   justify-content:center;
 
   align-items:center;
-
-  min-height:100vh;
 
   padding:20px;
 
@@ -49,11 +52,11 @@ body{
 
 .logo{
 
-  font-size:42px;
+  font-size:48px;
 
   font-weight:bold;
 
-  margin-bottom:10px;
+  margin-bottom:20px;
 
 }
 
@@ -61,9 +64,11 @@ body{
 
   opacity:.7;
 
+  line-height:1.8;
+
   margin-bottom:40px;
 
-  line-height:1.8;
+  font-size:18px;
 
 }
 
@@ -71,7 +76,7 @@ body{
 
   width:100%;
 
-  padding:18px;
+  padding:20px;
 
   border:none;
 
@@ -79,9 +84,9 @@ body{
 
   background:#06b6d4;
 
-  color:#000;
+  color:black;
 
-  font-size:20px;
+  font-size:22px;
 
   font-weight:bold;
 
@@ -99,7 +104,7 @@ body{
 
 #getCodeBtn:disabled{
 
-  opacity:.6;
+  opacity:.7;
 
   cursor:not-allowed;
 
@@ -107,21 +112,21 @@ body{
 
 .code-box{
 
+  display:none;
+
   margin-top:30px;
 
   background:#111827;
 
-  padding:25px;
-
   border-radius:20px;
+
+  padding:25px;
 
   font-size:30px;
 
-  letter-spacing:2px;
-
   font-weight:bold;
 
-  display:none;
+  letter-spacing:2px;
 
   word-break:break-all;
 
@@ -131,7 +136,7 @@ body{
 
   margin-top:20px;
 
-  opacity:.6;
+  opacity:.5;
 
   font-size:14px;
 
@@ -151,14 +156,17 @@ body{
 
   <div class="desc">
     اضغط على الزر للحصول على كود التفعيل الخاص بك.<br>
-    كل مستخدم يمكنه الحصول على كود واحد فقط.
+    يسمح النظام بكود واحد فقط لكل مستخدم.
   </div>
 
   <button id="getCodeBtn">
     اضغط للحصول على كود التفعيل
   </button>
 
-  <div class="code-box" id="codeBox"></div>
+  <div
+    class="code-box"
+    id="codeBox">
+  </div>
 
   <div class="note">
     يتم نسخ الكود تلقائياً بعد ظهوره
@@ -186,13 +194,16 @@ const codeBox =
   document.getElementById("codeBox");
 
 // ======================
-// هل أخذ كود سابقاً؟
+// منع التكرار
 // ======================
 
-const alreadyUsed =
-  localStorage.getItem("got_code");
+let loading = false;
 
-if(alreadyUsed){
+// ======================
+// هل أخذ كود مسبقاً؟
+// ======================
+
+if(localStorage.getItem("got_code")){
 
   btn.disabled = true;
 
@@ -207,22 +218,35 @@ if(alreadyUsed){
 
 btn.addEventListener("click", async () => {
 
-  // منع أكثر من مرة
+  // منع الضغط المتكرر
+  if(loading){
+
+    return;
+
+  }
+
+  // منع أكثر من كود
   if(localStorage.getItem("got_code")){
 
     alert(
-      "لقد حصلت مسبقاً على كود التفعيل 🎉\n\nنظام التفعيل يسمح بكود واحد فقط لكل مستخدم."
+      "لقد حصلت مسبقاً على كود التفعيل 🎉\n\nيسمح النظام بكود واحد فقط لكل مستخدم."
     );
 
     return;
 
   }
 
+  // قفل الزر
+  loading = true;
+
+  btn.disabled = true;
+
   btn.innerText =
     "جاري التحميل...";
 
   try{
 
+    // طلب الكود
     const response =
       await fetch(API_URL);
 
@@ -243,6 +267,12 @@ btn.addEventListener("click", async () => {
 
     }
 
+    // حفظ أنه أخذ كود
+    localStorage.setItem(
+      "got_code",
+      "true"
+    );
+
     // إظهار الكود
     codeBox.style.display =
       "block";
@@ -255,28 +285,26 @@ btn.addEventListener("click", async () => {
       data.code
     );
 
-    // حفظ أنه أخذ كود
-    localStorage.setItem(
-      "got_code",
-      "true"
-    );
-
-    // تعطيل الزر
-    btn.disabled = true;
-
+    // تغيير نص الزر
     btn.innerText =
       "تم نسخ الكود بنجاح";
 
-    // رسالة لطيفة
+    // رسالة نجاح
     alert(
-      "تم نسخ كود التفعيل بنجاح ✅\n\nلا يمكن الحصول على أكثر من كود لنفس المستخدم."
+      "تم استلام كود التفعيل بنجاح ✅\n\nلا يمكن الحصول على أكثر من كود."
     );
 
   }catch(error){
 
+    // خطأ
     alert(
       "حدث خطأ أثناء جلب الكود"
     );
+
+    // إعادة التفعيل
+    loading = false;
+
+    btn.disabled = false;
 
     btn.innerText =
       "اضغط للحصول على كود التفعيل";
