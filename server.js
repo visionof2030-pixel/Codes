@@ -64,7 +64,7 @@ function writeSnippets(data){
 }
 
 // ======================
-// Home
+// Home Route
 // ======================
 
 app.get("/", (req, res) => {
@@ -74,53 +74,41 @@ app.get("/", (req, res) => {
 });
 
 // ======================
-// GET snippets
+// GET all snippets
 // ======================
 
 app.get("/api/snippets", (req, res) => {
 
   const snippets = readSnippets();
 
-  // إخفاء الأكواد المستخدمة
-  const available =
-    snippets.filter(s => !s.used);
-
-  res.json(available);
+  res.json(snippets);
 
 });
 
 // ======================
-// Copy once only
+// GET one unused code
 // ======================
 
-app.post("/api/copy/:id", (req, res) => {
+app.get("/api/get-code", (req, res) => {
 
   const snippets = readSnippets();
 
+  // أول كود غير مستخدم
   const snippet =
     snippets.find(
-      s => s.id == req.params.id
+      s => !s.used
     );
 
-  // غير موجود
+  // لا توجد أكواد
   if(!snippet){
 
-    return res.status(404).json({
-      error: "الكود غير موجود"
+    return res.json({
+      error: "لا توجد أكواد متاحة"
     });
 
   }
 
-  // مستخدم مسبقًا
-  if(snippet.used){
-
-    return res.status(400).json({
-      error: "الكود مستخدم مسبقًا"
-    });
-
-  }
-
-  // تفعيل الاستخدام
+  // جعله مستخدم
   snippet.used = true;
 
   writeSnippets(snippets);
@@ -133,7 +121,7 @@ app.post("/api/copy/:id", (req, res) => {
 });
 
 // ======================
-// POST snippet
+// POST new snippet
 // ======================
 
 app.post("/api/snippets", (req, res) => {
@@ -168,6 +156,27 @@ app.post("/api/snippets", (req, res) => {
   writeSnippets(snippets);
 
   res.json(newSnippet);
+
+});
+
+// ======================
+// DELETE snippet
+// ======================
+
+app.delete("/api/snippets/:id", (req, res) => {
+
+  const snippets = readSnippets();
+
+  const filtered =
+    snippets.filter(
+      s => s.id != req.params.id
+    );
+
+  writeSnippets(filtered);
+
+  res.json({
+    success: true
+  });
 
 });
 
