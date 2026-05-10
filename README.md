@@ -12,17 +12,6 @@ content="width=device-width, initial-scale=1.0"
 
 <title>كود نيكسوس</title>
 
-<!-- Prism -->
-
-<link
-rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css"
-/>
-
-<script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
-
 <style>
 
 body{
@@ -32,78 +21,32 @@ background:#0b1220;
 color:white;
 font-family:Arial;
 
+display:flex;
+justify-content:center;
+align-items:center;
+
+height:100vh;
+
 }
 
 .container{
 
-display:flex;
-min-height:100vh;
-
-}
-
-.sidebar{
-
-width:320px;
-background:#111827;
-padding:20px;
-border-left:1px solid #1f2937;
-
-}
-
-.viewer{
-
-flex:1;
-padding:30px;
+text-align:center;
+width:90%;
+max-width:500px;
 
 }
 
 h1{
 
-margin-top:0;
-
-}
-
-#searchInput{
-
-width:100%;
-padding:12px;
-border:none;
-border-radius:10px;
 margin-bottom:20px;
-background:#1f2937;
-color:white;
-outline:none;
 
 }
 
-.snippet-item{
+p{
 
-background:#1f2937;
-padding:14px;
-border-radius:12px;
-margin-bottom:10px;
-cursor:pointer;
-transition:0.2s;
-
-}
-
-.snippet-item:hover{
-
-background:#374151;
-
-}
-
-.snippet-title{
-
-font-weight:bold;
-margin-bottom:5px;
-
-}
-
-.snippet-lang{
-
-font-size:14px;
 opacity:0.7;
+margin-bottom:30px;
 
 }
 
@@ -112,41 +55,29 @@ button{
 background:#06b6d4;
 color:black;
 border:none;
-padding:12px 20px;
-border-radius:12px;
-cursor:pointer;
-margin-bottom:20px;
+padding:16px 26px;
+border-radius:14px;
+font-size:18px;
 font-weight:bold;
+cursor:pointer;
 
 }
 
-pre{
+button:hover{
 
-border-radius:15px;
-overflow:auto;
-
-}
-
-.description{
-
-opacity:0.8;
-margin-bottom:20px;
+opacity:0.9;
 
 }
 
-@media(max-width:768px){
+.code-box{
 
-.container{
-
-flex-direction:column;
-
-}
-
-.sidebar{
-
-width:auto;
-
-}
+margin-top:30px;
+background:#111827;
+padding:20px;
+border-radius:14px;
+display:none;
+word-break:break-all;
+font-size:20px;
 
 }
 
@@ -158,210 +89,47 @@ width:auto;
 
 <div class="container">
 
-<!-- Sidebar -->
+<h1>
+كود نيكسوس
+</h1>
 
-<aside class="sidebar">
-
-<h1>كود نيكسوس</h1>
-
-<input
-type="text"
-id="searchInput"
-placeholder="بحث..."
->
-
-<div id="snippetsList"></div>
-
-</aside>
-
-<!-- Viewer -->
-
-<main class="viewer">
-
-<h2 id="title">
-اختر كود
-</h2>
-
-<p
-class="description"
-id="description">
+<p>
+اضغط على الزر للحصول على كود تفعيل جديد
 </p>
 
-<button id="copyBtn">
-نسخ الكود
+<button id="getCodeBtn">
+اضغط للحصول على كود التفعيل
 </button>
 
-<pre>
-<code
-id="codeBlock"
-class="language-javascript">
-</code>
-</pre>
-
-</main>
+<div
+class="code-box"
+id="codeBox">
+</div>
 
 </div>
 
 <script>
 
-// =======================
-// API URL
-// =======================
-
 const API_URL =
-"https://codes-5lyb.onrender.com/api/snippets";
+"https://codes-5lyb.onrender.com/api/get-code";
 
-// =======================
-// Elements
-// =======================
+const getCodeBtn =
+document.getElementById("getCodeBtn");
 
-const snippetsList =
-document.getElementById("snippetsList");
+const codeBox =
+document.getElementById("codeBox");
 
-const titleEl =
-document.getElementById("title");
-
-const descEl =
-document.getElementById("description");
-
-const codeBlock =
-document.getElementById("codeBlock");
-
-const copyBtn =
-document.getElementById("copyBtn");
-
-const searchInput =
-document.getElementById("searchInput");
-
-// =======================
-// State
-// =======================
-
-let snippets = [];
-
-let currentSnippet = null;
-
-// =======================
-// Load snippets
-// =======================
-
-async function loadSnippets(){
+getCodeBtn.onclick = async () => {
 
 try{
+
+getCodeBtn.disabled = true;
+
+getCodeBtn.textContent =
+"جاري التحميل...";
 
 const response =
 await fetch(API_URL);
-
-snippets =
-await response.json();
-
-renderSnippets(snippets);
-
-if(snippets.length){
-
-showSnippet(snippets[0]);
-
-}else{
-
-titleEl.textContent =
-"لا توجد أكواد متاحة";
-
-descEl.textContent = "";
-
-codeBlock.textContent = "";
-
-}
-
-}catch(error){
-
-console.error(error);
-
-alert("فشل تحميل الأكواد");
-
-}
-
-}
-
-// =======================
-// Render snippets
-// =======================
-
-function renderSnippets(data){
-
-snippetsList.innerHTML = "";
-
-data.forEach(snippet => {
-
-const div =
-document.createElement("div");
-
-div.className =
-"snippet-item";
-
-div.innerHTML = `
-
-<div class="snippet-title">
-${snippet.title}
-</div>
-
-<div class="snippet-lang">
-${snippet.language}
-</div>
-
-`;
-
-div.addEventListener("click", () => {
-
-showSnippet(snippet);
-
-});
-
-snippetsList.appendChild(div);
-
-});
-
-}
-
-// =======================
-// Show snippet
-// =======================
-
-function showSnippet(snippet){
-
-currentSnippet = snippet;
-
-titleEl.textContent =
-snippet.title;
-
-descEl.textContent =
-snippet.description;
-
-codeBlock.textContent =
-snippet.code;
-
-codeBlock.className =
-`language-${snippet.language}`;
-
-Prism.highlightElement(codeBlock);
-
-// =======================
-// Copy once only
-// =======================
-
-copyBtn.onclick = async () => {
-
-try{
-
-const response =
-await fetch(
-
-`https://codes-5lyb.onrender.com/api/copy/${snippet.id}`,
-
-{
-method: "POST"
-}
-
-);
 
 const data =
 await response.json();
@@ -370,56 +138,42 @@ if(data.error){
 
 alert(data.error);
 
+getCodeBtn.disabled = false;
+
+getCodeBtn.textContent =
+"اضغط للحصول على كود التفعيل";
+
 return;
 
 }
 
+// إظهار الكود
+codeBox.style.display =
+"block";
+
+codeBox.textContent =
+data.code;
+
+// نسخ تلقائي
 await navigator.clipboard.writeText(
 data.code
 );
 
-alert("تم نسخ الكود");
+getCodeBtn.textContent =
+"تم الحصول على الكود";
 
-// إعادة تحميل الأكواد
-loadSnippets();
-
-}catch{
+}catch(error){
 
 alert("حدث خطأ");
+
+getCodeBtn.disabled = false;
+
+getCodeBtn.textContent =
+"اضغط للحصول على كود التفعيل";
 
 }
 
 };
-
-}
-
-// =======================
-// Search
-// =======================
-
-searchInput.addEventListener("input", e => {
-
-const value =
-e.target.value.toLowerCase();
-
-const filtered =
-snippets.filter(s =>
-
-s.title
-.toLowerCase()
-.includes(value)
-
-);
-
-renderSnippets(filtered);
-
-});
-
-// =======================
-// Start
-// =======================
-
-loadSnippets();
 
 </script>
 
