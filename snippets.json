@@ -1,10 +1,28 @@
 [
   {
     "id": 1,
-    "title": "اكواد جديدة",
+    "title": "كود تفعيل",
     "language": "text",
-    "description": "مجموعة اكواد",
-    "code": "89325E835EF0465E\nB47055F400B643D8\n320617ECB4B345E6\n624C7F28A3C2401A\n1771DBD16D294BF5\n50BDE9ED38194715",
-    "createdAt": "2026-05-10"
+    "description": "كود جاهز",
+    "code": "89325E835EF0465E",
+    "used": false
+  },
+
+  {
+    "id": 2,
+    "title": "كود تفعيل",
+    "language": "text",
+    "description": "كود جاهز",
+    "code": "B47055F400B643D8",
+    "used": false
+  },
+
+  {
+    "id": 3,
+    "title": "كود تفعيل",
+    "language": "text",
+    "description": "كود جاهز",
+    "code": "320617ECB4B345E6",
+    "used": false
   }
 ]
