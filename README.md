@@ -3,187 +3,154 @@
 
 <head>
 
-  <meta charset="UTF-8" />
+<meta charset="UTF-8" />
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+/>
 
-  <title>كود نيكسوس</title>
+<title>كود نيكسوس</title>
 
-  <!-- Prism -->
+<!-- Prism -->
 
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css"
-  />
+<link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css"
+/>
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
 
-  <!-- Style -->
+<style>
 
-  <style>
+body{
 
-    body{
+margin:0;
+background:#0b1220;
+color:white;
+font-family:Arial;
 
-      margin:0;
+}
 
-      background:#0b1220;
+.container{
 
-      color:white;
+display:flex;
+min-height:100vh;
 
-      font-family:Arial;
+}
 
-    }
+.sidebar{
 
-    .container{
+width:320px;
+background:#111827;
+padding:20px;
+border-left:1px solid #1f2937;
 
-      display:flex;
+}
 
-      min-height:100vh;
+.viewer{
 
-    }
+flex:1;
+padding:30px;
 
-    .sidebar{
+}
 
-      width:320px;
+h1{
 
-      background:#111827;
+margin-top:0;
 
-      padding:20px;
+}
 
-      border-left:1px solid #1f2937;
+#searchInput{
 
-    }
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+margin-bottom:20px;
+background:#1f2937;
+color:white;
+outline:none;
 
-    .viewer{
+}
 
-      flex:1;
+.snippet-item{
 
-      padding:30px;
+background:#1f2937;
+padding:14px;
+border-radius:12px;
+margin-bottom:10px;
+cursor:pointer;
+transition:0.2s;
 
-    }
+}
 
-    h1{
+.snippet-item:hover{
 
-      margin-top:0;
+background:#374151;
 
-    }
+}
 
-    #searchInput{
+.snippet-title{
 
-      width:100%;
+font-weight:bold;
+margin-bottom:5px;
 
-      padding:12px;
+}
 
-      border:none;
+.snippet-lang{
 
-      border-radius:10px;
+font-size:14px;
+opacity:0.7;
 
-      margin-bottom:20px;
+}
 
-      background:#1f2937;
+button{
 
-      color:white;
+background:#06b6d4;
+color:black;
+border:none;
+padding:12px 20px;
+border-radius:12px;
+cursor:pointer;
+margin-bottom:20px;
+font-weight:bold;
 
-      outline:none;
+}
 
-    }
+pre{
 
-    .snippet-item{
+border-radius:15px;
+overflow:auto;
 
-      background:#1f2937;
+}
 
-      padding:14px;
+.description{
 
-      border-radius:12px;
+opacity:0.8;
+margin-bottom:20px;
 
-      margin-bottom:10px;
+}
 
-      cursor:pointer;
+@media(max-width:768px){
 
-      transition:0.2s;
+.container{
 
-    }
+flex-direction:column;
 
-    .snippet-item:hover{
+}
 
-      background:#374151;
+.sidebar{
 
-    }
+width:auto;
 
-    .snippet-title{
+}
 
-      font-weight:bold;
+}
 
-      margin-bottom:5px;
-
-    }
-
-    .snippet-lang{
-
-      font-size:14px;
-
-      opacity:0.7;
-
-    }
-
-    button{
-
-      background:#06b6d4;
-
-      color:black;
-
-      border:none;
-
-      padding:12px 20px;
-
-      border-radius:12px;
-
-      cursor:pointer;
-
-      margin-bottom:20px;
-
-      font-weight:bold;
-
-    }
-
-    pre{
-
-      border-radius:15px;
-
-      overflow:auto;
-
-    }
-
-    .description{
-
-      opacity:0.8;
-
-      margin-bottom:20px;
-
-    }
-
-    @media(max-width:768px){
-
-      .container{
-
-        flex-direction:column;
-
-      }
-
-      .sidebar{
-
-        width:auto;
-
-      }
-
-    }
-
-  </style>
+</style>
 
 </head>
 
@@ -191,80 +158,80 @@
 
 <div class="container">
 
-  <!-- Sidebar -->
+<!-- Sidebar -->
 
-  <aside class="sidebar">
+<aside class="sidebar">
 
-    <h1>كود نيكسوس</h1>
+<h1>كود نيكسوس</h1>
 
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="بحث..."
-    >
+<input
+type="text"
+id="searchInput"
+placeholder="بحث..."
+>
 
-    <div id="snippetsList"></div>
+<div id="snippetsList"></div>
 
-  </aside>
+</aside>
 
-  <!-- Viewer -->
+<!-- Viewer -->
 
-  <main class="viewer">
+<main class="viewer">
 
-    <h2 id="title">
-      اختر كود
-    </h2>
+<h2 id="title">
+اختر كود
+</h2>
 
-    <p
-      class="description"
-      id="description">
-    </p>
+<p
+class="description"
+id="description">
+</p>
 
-    <button id="copyBtn">
-      نسخ الكود
-    </button>
+<button id="copyBtn">
+نسخ الكود
+</button>
 
-    <pre>
-      <code
-        id="codeBlock"
-        class="language-javascript">
-      </code>
-    </pre>
+<pre>
+<code
+id="codeBlock"
+class="language-javascript">
+</code>
+</pre>
 
-  </main>
+</main>
 
 </div>
 
 <script>
 
 // =======================
-// Backend API URL
+// API URL
 // =======================
 
 const API_URL =
-  "https://codes-5lyb.onrender.com/api/snippets";
+"https://codes-5lyb.onrender.com/api/snippets";
 
 // =======================
 // Elements
 // =======================
 
 const snippetsList =
-  document.getElementById("snippetsList");
+document.getElementById("snippetsList");
 
 const titleEl =
-  document.getElementById("title");
+document.getElementById("title");
 
 const descEl =
-  document.getElementById("description");
+document.getElementById("description");
 
 const codeBlock =
-  document.getElementById("codeBlock");
+document.getElementById("codeBlock");
 
 const copyBtn =
-  document.getElementById("copyBtn");
+document.getElementById("copyBtn");
 
 const searchInput =
-  document.getElementById("searchInput");
+document.getElementById("searchInput");
 
 // =======================
 // State
@@ -272,35 +239,46 @@ const searchInput =
 
 let snippets = [];
 
+let currentSnippet = null;
+
 // =======================
 // Load snippets
 // =======================
 
 async function loadSnippets(){
 
-  try{
+try{
 
-    const response =
-      await fetch(API_URL);
+const response =
+await fetch(API_URL);
 
-    snippets =
-      await response.json();
+snippets =
+await response.json();
 
-    renderSnippets(snippets);
+renderSnippets(snippets);
 
-    if(snippets.length){
+if(snippets.length){
 
-      showSnippet(snippets[0]);
+showSnippet(snippets[0]);
 
-    }
+}else{
 
-  }catch(error){
+titleEl.textContent =
+"لا توجد أكواد متاحة";
 
-    console.error(error);
+descEl.textContent = "";
 
-    alert("فشل تحميل الأكواد");
+codeBlock.textContent = "";
 
-  }
+}
+
+}catch(error){
+
+console.error(error);
+
+alert("فشل تحميل الأكواد");
+
+}
 
 }
 
@@ -310,37 +288,37 @@ async function loadSnippets(){
 
 function renderSnippets(data){
 
-  snippetsList.innerHTML = "";
+snippetsList.innerHTML = "";
 
-  data.forEach(snippet => {
+data.forEach(snippet => {
 
-    const div =
-      document.createElement("div");
+const div =
+document.createElement("div");
 
-    div.className =
-      "snippet-item";
+div.className =
+"snippet-item";
 
-    div.innerHTML = `
+div.innerHTML = `
 
-      <div class="snippet-title">
-        ${snippet.title}
-      </div>
+<div class="snippet-title">
+${snippet.title}
+</div>
 
-      <div class="snippet-lang">
-        ${snippet.language}
-      </div>
+<div class="snippet-lang">
+${snippet.language}
+</div>
 
-    `;
+`;
 
-    div.addEventListener("click", () => {
+div.addEventListener("click", () => {
 
-      showSnippet(snippet);
+showSnippet(snippet);
 
-    });
+});
 
-    snippetsList.appendChild(div);
+snippetsList.appendChild(div);
 
-  });
+});
 
 }
 
@@ -350,29 +328,68 @@ function renderSnippets(data){
 
 function showSnippet(snippet){
 
-  titleEl.textContent =
-    snippet.title;
+currentSnippet = snippet;
 
-  descEl.textContent =
-    snippet.description;
+titleEl.textContent =
+snippet.title;
 
-  codeBlock.textContent =
-    snippet.code;
+descEl.textContent =
+snippet.description;
 
-  codeBlock.className =
-    `language-${snippet.language}`;
+codeBlock.textContent =
+snippet.code;
 
-  Prism.highlightElement(codeBlock);
+codeBlock.className =
+`language-${snippet.language}`;
 
-  copyBtn.onclick = async () => {
+Prism.highlightElement(codeBlock);
 
-    await navigator.clipboard.writeText(
-      snippet.code
-    );
+// =======================
+// Copy once only
+// =======================
 
-    alert("تم النسخ");
+copyBtn.onclick = async () => {
 
-  };
+try{
+
+const response =
+await fetch(
+
+`https://codes-5lyb.onrender.com/api/copy/${snippet.id}`,
+
+{
+method: "POST"
+}
+
+);
+
+const data =
+await response.json();
+
+if(data.error){
+
+alert(data.error);
+
+return;
+
+}
+
+await navigator.clipboard.writeText(
+data.code
+);
+
+alert("تم نسخ الكود");
+
+// إعادة تحميل الأكواد
+loadSnippets();
+
+}catch{
+
+alert("حدث خطأ");
+
+}
+
+};
 
 }
 
@@ -382,18 +399,19 @@ function showSnippet(snippet){
 
 searchInput.addEventListener("input", e => {
 
-  const value =
-    e.target.value.toLowerCase();
+const value =
+e.target.value.toLowerCase();
 
-  const filtered =
-    snippets.filter(s =>
+const filtered =
+snippets.filter(s =>
 
-      s.title.toLowerCase()
-      .includes(value)
+s.title
+.toLowerCase()
+.includes(value)
 
-    );
+);
 
-  renderSnippets(filtered);
+renderSnippets(filtered);
 
 });
 
